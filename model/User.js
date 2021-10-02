@@ -19,7 +19,7 @@ var validatePhone = function (phone) {
 const UserSchema = new mongoose.Schema({
     user_name: {
         type: String,
-        required: true,
+        // required: true,
         trim: true
     },
     email: {

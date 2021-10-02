@@ -1,5 +1,3 @@
-// Add a collection to store views for Task, likes and ratings
-
 const mongoose = require('mongoose')
 const ViewLikeSchema = new mongoose.Schema({
     todo_id: {

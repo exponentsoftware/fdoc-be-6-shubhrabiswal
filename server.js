@@ -10,6 +10,9 @@ const PORT = process.env.PORT||5000
 require('./config/passport');
 const todoRoute = require('./router/todorouter')
 const userRoute = require('./router/userrouter')
+const commentRoute = require('./router/commentroute')
+const tagRoute = require('./router/tagroute')
+
 
 app.use(express.json())
 app.use(bodyParser.json());
@@ -24,6 +27,8 @@ app.use(session({
 
 app.use('/api/todo', todoRoute)
 app.use('/api/user', userRoute)
+app.use('/api/comment',commentRoute)
+app.use('/api/tag',tagRoute)
 
 app.get('/',function(req,res){
     res.send("working")

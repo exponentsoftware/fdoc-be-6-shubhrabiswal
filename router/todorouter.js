@@ -5,11 +5,11 @@ const viewlikecontroller = require('../controller/viewlikecontroller')
 const auth = require('./auth')
 
 router.get('/like',viewlikecontroller.getlikes) 
-router.post('/add',todocontroller.addtodo )
-router.get('/', auth.required,todocontroller.getalltodo);
-router.get('/:id',auth.required, todocontroller.gettodoById);
-router.put('/:id',auth.required,todocontroller.updatetodo )
-router.delete('/:id',auth.required,todocontroller.deletetodo )
+router.post('/',todocontroller.addtodo )
+router.get('/',todocontroller.getalltodo);
+router.get('/:id', todocontroller.gettodoById);
+router.put('/:id',todocontroller.updatetodo )
+router.delete('/:id',todocontroller.deletetodo )
 
 // router.post('/category',auth.required,todocontroller.bycategory)
 // router.post('/title',auth.required,todocontroller.bytitle)

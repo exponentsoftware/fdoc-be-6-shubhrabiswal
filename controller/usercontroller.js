@@ -84,8 +84,8 @@ exports.getalltodo = async (req, res) => {
         {$match: {todo_status:{$eq:"completed"}}},
         {
           $group: {
-            "_id": "$_id",
-            user_name:{user_name:"$user_name"}
+            // "_id": "$_id",
+            "user_name":"$user_name"
           }
         }
       ])

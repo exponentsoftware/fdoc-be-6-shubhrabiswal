@@ -1,5 +1,7 @@
 const Todo = require("../model/Todo");
 const ViewLike = require("../model/ViewLike")
+const Comment = require("../model/Comment")
+const Tag = require("../model/Tag")
 
 const success = {
     error: null,
@@ -20,8 +22,10 @@ exports.addtodo = async (req, res) => {
     try {
         let new_todo = await new Todo(req.body).save()
         console.log(new_todo._id)
-        console.log(new_todo)
+        console.log("new_todo",new_todo)
         let like_todo = await new ViewLike({todo_id:new_todo._id}).save()
+        // let comment = await new Comment({todo_id:new_todo._id}).save()
+        // let tag = await new Tag({todo_id:new_todo._id}).save()
         return res.status(200).send({
             error: null,
             data: new_todo,

@@ -20,6 +20,6 @@ const TodoSchema = new mongoose.Schema({
         enum: ["task", "hobby", "work"],
         default: "task"
     },
-
+    
 }, { timestamps: true })
 module.exports = mongoose.model('Todo', TodoSchema)
