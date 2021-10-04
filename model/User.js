@@ -38,12 +38,13 @@ const UserSchema = new mongoose.Schema({
         enum: ["admin", "app_user"],
         default: "app_user"
     },
-    password: {
-        type: String,
-        required: true
-    },
+    // password: {
+    //     type: String,
+    //     required: true
+    // },
     hash: String,
     salt: String,
+
 
 }, { timestamps: true })
 
@@ -72,22 +73,50 @@ UserSchema.methods.validatePassword = function (password) {
     return this.hash === hash;
 };
 
+// UserSchema.methods.generateJWT = function () {
+//     const today = new Date();
+//     const expirationDate = new Date(today);
+//     expirationDate.setDate(today.getDate() + 60);
+
+//     return jwt.sign({
+//         email: this.email,
+//         id: this._id,
+//         role: this.role,
+//         exp: parseInt(expirationDate.getTime() / 1000, 10),
+//     }, 'secret'); //process.env.JWTKEY);
+// }
+
+
 UserSchema.methods.generateJWT = function () {
     const today = new Date();
     const expirationDate = new Date(today);
     expirationDate.setDate(today.getDate() + 60);
-
-    return jwt.sign({
-        email: this.email,
-        id: this._id,
-        exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, 'secret'); //process.env.JWTKEY);
+    console.log(this.email,this._id,this.role)
+    if(this.role == "admin"){
+        return jwt.sign({
+            email: this.email,
+            id: this._id,
+            role: this.role,
+            exp: parseInt(expirationDate.getTime() / 1000, 10),
+        }, 'secretadmin')//process.env.ADMIN_JWTKEY);
+    }else{
+        return jwt.sign({
+            email: this.email,
+            id: this._id,
+            role: this.role,
+            exp: parseInt(expirationDate.getTime() / 1000, 10),
+        }, 'secretuser')//process.env.USER_JWTKEY);
+    }
+    
 }
+
+
 
 UserSchema.methods.toAuthJSON = function () {
     return {
         _id: this._id,
         email: this.email,
+        role: this.role,
         token: this.generateJWT(),
     };
 };

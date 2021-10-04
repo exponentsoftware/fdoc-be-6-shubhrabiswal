@@ -29,7 +29,7 @@ exports.adduser = async (req, res) => {
     password = new_user.setPassword(req.body.password)
     // console.log(password)
     new_user.setPassword(req.body.password)
-    new_user.save()
+    await new_user.save()
     console.log(new_user, new_user.password)
     res.status(200).json({ user: new_user.toAuthJSON() })
   } catch (err) {
@@ -44,7 +44,7 @@ exports.signin = (req, res, next) => {
 
   // console.log(req.headers)
   const user = req.body
-  console.log(user.email)
+  console.log(user.email,user.password)
   if (!user.email) {
     return res.status(422).json({ errors: { email: 'is required', }, });
   }
@@ -62,7 +62,7 @@ exports.signin = (req, res, next) => {
       const user = passportUser;
       user.token = passportUser.generateJWT();
       console.log(user)
-      return res.json({ user: user.toAuthJSON() });
+      return res.json({ user: user.toAuthJSON() ,success:"User sign in successful"});
     }
 
     return res.status(400).json({ info });
@@ -81,26 +81,27 @@ exports.getalltodo = async (req, res) => {
       //   { $sortByCount: "$todo_status" } 
       // ])
       let all_todo = await Todo.aggregate([
-        {$match: {todo_status:{$eq:"completed"}}},
+        { $match: { todo_status: { $eq: "completed" } } },
         {
           $group: {
             // "_id": "$_id",
-            "user_name":"$user_name"
+            "user_name": "$user_name"
           }
-        }
+        },
+        { $sortByCount: "$todo_status" }
       ])
-  // {$sortByCount:{todo_status:"completed"}}])
-  return res.status(200).send({ data: all_todo })
-}
-if (user.role == "app_user") {
-  // let todo = await Todo.find({ user_name: id });
-  let todo = await Todo.find({ $and: [{ user_name: id }, { todo_status: "completed" }] });
-  console.log(todo)
-  return res.status(200).json({ success, data: todo })
-}
-    } catch (err) {
-  return res.status(400).send({ failure, error: err.message })
-}
+      // {$sortByCount:{todo_status:"completed"}}])
+      return res.status(200).send({ data: all_todo })
+    }
+    if (user.role == "app_user") {
+      // let todo = await Todo.find({ user_name: id });
+      let todo = await Todo.find({ $and: [{ user_name: id }, { todo_status: "completed" }] });
+      console.log(todo)
+      return res.status(200).json({ success, data: todo })
+    }
+  } catch (err) {
+    return res.status(400).send({ failure, error: err.message })
+  }
 };
 
 

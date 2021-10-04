@@ -59,6 +59,7 @@ exports.updatecomment = async (req, res) => {
     let user_id = req.body.user_id
     try {
         let comment = await Comment.findById({_id:id})
+        // console.log(comment)
         let user = await User.findById({ _id: user_id });
         if (user.role == "admin") {
             let updated_comment = await Comment.findOneAndUpdate(
@@ -71,7 +72,7 @@ exports.updatecomment = async (req, res) => {
                 message: "Comments updated successfully by admin"
             })
         }
-
+        
         if (user.role == "app_user" && comment.posted_by == user_id) {
             let updated_comment = await Comment.findOneAndUpdate(
                 id,

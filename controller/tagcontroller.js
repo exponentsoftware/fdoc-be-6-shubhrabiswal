@@ -104,7 +104,7 @@ exports.deletetag = async (req, res) => {
     try {
         // let tag = await Tag.findById({ _id: id })
         let user = await User.findById({ _id: user_id })
-
+        console.log(user)
         if (user.role == "admin") {
             const tag = await Tag.findOneAndDelete({ _id: id });
             return res.status(200).send({
